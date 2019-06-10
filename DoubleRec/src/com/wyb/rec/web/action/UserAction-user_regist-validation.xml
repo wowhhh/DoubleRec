@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--约束头在xwork里面 -->
+
+  <!DOCTYPE validators PUBLIC
+  		"-//Apache Struts//XWork Validator 1.0.3//EN"
+  		"http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+ 
+
+ <validators>
+ 	<!-- 校验用户名 -->
+ 	<field name="userName" >
+ 		<field-validator type="requiredstring">
+ 			<message>用户名不能为空！</message>
+ 		</field-validator>
+ 	</field>
+ 	
+ 	<!-- 校验密码 -->
+ 	<field name="userPass" >
+ 		<field-validator type="requiredstring">
+ 			<message>密码不能为空！</message>
+ 		</field-validator>
+ 	</field>
+ 	
+ 	<!-- 校验邮箱 -->
+ 	<field name="userEmail">
+ 		<field-validator type="email">
+ 			<message>邮箱格式不正确！</message>
+ 		</field-validator>
+ 	</field>
+ 	
+ 	
+ </validators>

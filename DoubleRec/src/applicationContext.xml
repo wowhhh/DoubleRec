@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<!-- 引入外部属性文件=============================== -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	
+	<!-- 配置C3P0连接池=============================== -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driverClass}"/>
+		<property name="jdbcUrl" value="${jdbc.url}"/>
+		<property name="user" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+	
+	<!-- 配置SessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<!-- 注入连接池 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 配置Hibernate的相关的属性 -->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.connection.autocommit">true</prop>
+			</props>
+		</property>
+		
+		<!-- 引入映射文件 -->
+		<property name="mappingResources">
+		    <list>
+				
+				<value>com/wyb/rec/domain/DiscoverSong.hbm.xml</value>
+				<value>com/wyb/rec/domain/NewSong.hbm.xml</value>
+				<value>com/wyb/rec/domain/TopSong.hbm.xml</value>
+				<value>com/wyb/rec/domain/type.hbm.xml</value>
+				<value>com/wyb/rec/domain/SongList.hbm.xml</value>
+				<value>com/wyb/rec/domain/Song.hbm.xml</value>
+				<value>com/wyb/rec/domain/Rec.hbm.xml</value>
+				<value>com/wyb/rec/domain/CollectSongList.hbm.xml</value>
+				<value>com/wyb/rec/domain/User.hbm.xml</value>
+				<value>com/wyb/rec/domain/RecSongList.hbm.xml</value>
+				<value>com/wyb/rec/domain/UserAndSlType.hbm.xml</value>
+				<value>com/wyb/rec/domain/CollectSong.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 配置Action ===========-->
+	<bean id="userAction" class="com.wyb.rec.web.action.UserAction" scope="prototype" >
+		<property name="userService" ref="userService"></property><!-- 在Action中注入UserService -->
+	</bean>
+	<!-- 首页访问的Action -->
+	<bean id="indexAction" class="com.wyb.rec.index.action.IndexAction" scope="prototype">
+		<property name="songService" ref="songService"></property><!-- 在首页的action中注入songService -->
+	</bean>
+	<!-- 配置歌单类型的Action -->
+	<bean id="genresAction" class="com.wyb.rec.web.action.GenresAction" scope="prototype">
+		<property name="genresService" ref="genresService"></property><!-- 在歌单的action中注入userRecService-->
+	</bean> 
+	<!-- 单个歌曲相关Action -->
+	<bean id="songAction" class="com.wyb.rec.web.action.SongAction" scope="prototype">
+		<property name="songService" ref="songService"></property>
+	</bean>
+	<!-- 推荐相关的Action -->
+	<bean id="userRecAction" class="com.wyb.rec.web.action.UserRecAction" scope="prototype">
+		<property name="userRecService" ref="userRecService"></property><!-- 在推荐的action中注入userRecService -->
+	</bean>
+	<!-- 歌单相关Action -->
+	<bean id="songListAction" class="com.wyb.rec.web.action.SongListAction" scope="prototype">
+		<property name="songListService" ref="songListService"></property>
+	</bean>
+	
+	<bean id="SearchAction" class="com.wyb.rec.web.action.SearchAction" scope="prototype">
+		<property name="searchService" ref="searchService"></property>
+	</bean>
+	
+	<!-- 配置Service -->
+	<bean id="userService" class="com.wyb.rec.service.impl.UserServiceImpl">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	
+	<bean id="songService" class="com.wyb.rec.service.impl.SongServiceImpl">
+		<property name="songDao" ref="songDao"></property>
+	</bean>
+	
+	<bean id="genresService" class="com.wyb.rec.service.impl.GenresServiceImpl">
+		<property name="genresDao" ref="genresDao"></property>
+	</bean>
+	
+	<bean id="userRecService" class="com.wyb.rec.service.impl.UserRecServiceImpl">
+		<property name="userRecDao" ref="userRecDao"></property>
+	</bean>
+	
+	<bean id="songListService" class="com.wyb.rec.service.impl.SongListServiceImpl">
+		<property name="songListDao" ref="songListDao"></property>
+	</bean>
+	
+	<bean id="searchService" class="com.wyb.rec.service.impl.SearchServiceImpl">
+		<property name="searchDao" ref="searchDao"></property>
+	</bean>
+	
+	<!-- 配置Dao -->
+	<bean id="userDao" class="com.wyb.rec.dao.impl.UserDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="songDao" class="com.wyb.rec.dao.impl.SongDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="genresDao" class="com.wyb.rec.dao.impl.GenresDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="userRecDao" class="com.wyb.rec.dao.impl.UserRecDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="songListDao" class="com.wyb.rec.dao.impl.SongListDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="searchDao" class="com.wyb.rec.dao.impl.SearchDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- 开启注解事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>

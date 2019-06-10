@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+	<class name="com.wyb.rec.domain.DiscoverSong" table="discoversong">
+		<id name="iddiscoversong"><!-- 主键 -->
+			<generator class="native"></generator>
+		</id>
+		
+		<property name="SongId"></property>
+		<property name="SongName"></property>
+		<property name="SongTime"></property>
+		<property name="SongSinger"></property>
+		<property name="SongUrl"></property>
+		<property name="SongPic"></property>
+		<property name="SongLrc"></property>
+		<property name="Songtimes"></property>
+	</class>
+</hibernate-mapping>

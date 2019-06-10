@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 配置Struts2的常量 -->
+	<constant name="struts.action.extension" value="action"/>
+	
+	<package name="rec" extends="struts-default" namespace="/">
+		<!-- 配置用户相关的Action -->
+		<action name="user_*" class="userAction" method="{1}">
+			<result name="login">signin.jsp</result><!-- 用于注册成功之后的跳转和登录失败的跳转 -->
+			<result name="input">signup.jsp</result><!-- 后台校验出错，返回注册页面 -->
+			<result name="loginPage">signin.jsp</result><!-- 用于用户在首页进行的点击登录 -->
+			<result name="loginSuccess" type="redirectAction">index</result><!-- 用于用户登录成功之后的跳转 -->
+			<result name="registSuccess" type="redirectAction">user_registRec</result>
+			<result name="quit" type="redirectAction">index</result>
+			<result name="taste">taste.jsp</result>
+			<result name="success" type="stream">  
+            	<param name="contentType">text/html;charset=utf-8</param>  
+            	<param name="inputName">inputStream</param>
+        	</result>  
+        	<result name="registRec">firsttaste.jsp</result>
+        	<result name="songlistrec" type="redirectAction">userrec_SongListRec</result>
+        	<result name="signup">signup.jsp</result>
+		</action>
+		
+		<!-- 配置首页访问的Action -->
+		<action name="index" class="indexAction">
+		<result name="index">index.jsp </result>
+		</action>
+		
+		<!-- 配置歌单类型相关的Action（歌单详情的查看写在了这个action里面） -->
+		<action name="genres_*" class="genresAction" method="{1}">
+			<result name="genres">genres.jsp</result>
+			<result name="genres_one">genres.jsp</result>
+			<result name="songlist_detail">songlistdetail.jsp</result>
+		</action>
+		
+		<!-- 配置用户推荐相关的Action -->
+		<action name="userrec_*" class="userRecAction" method="{1}">
+			<result name="recsong">RecSong.jsp</result>
+			<result name="needlogin">needlogin.jsp</result>
+			<result name="recType">recsonglist.jsp</result>
+		</action>
+		
+		<!-- 配置歌单操作相关的action -->
+		
+		<action name="songlist_*" class="songListAction" method="{1}">
+		<!-- 以下的跳转暂时不用 -->
+			<result name="Collected" type="redirectAction">songlist_Collected</result>
+			<result name="songlist_detail">songlistdetail.jsp</result>
+			<result name="Getdetail" type="redirectAction">genres_detail</result>
+			<result name="songlist_detail">songlistdetail.jsp</result>
+			 <result name="success" type="stream">  
+            	<param name="contentType">text/html;charset=utf-8</param>  
+            	<param name="inputName">inputStream</param>
+        	</result>  
+        	<result name="GetCollect">collectedsonglists.jsp</result>
+        	<result name="play" type="redirectAction">index</result>
+		</action>
+		
+		<action name="search_*" class="SearchAction">
+			<result name="song">search.jsp</result>
+			<result name="collectedSongs">collectedsongs.jsp</result>
+		</action>
+		
+		<action name="song_*" class="songAction" method="{1}">
+			 <result name="success" type="stream">  
+            	<param name="contentType">text/html;charset=utf-8</param>  
+            	<param name="inputName">inputStream</param>
+        	</result>  
+        	<result name="index" type="redirectAction">index</result>
+        	<result name="collectedSongs">collectedsongs.jsp</result>
+		</action>
+		
+	</package>
+	
+</struts>

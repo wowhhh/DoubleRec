@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+	<class name="com.wyb.rec.domain.SongList" table="songlist">
+		<id name="id"><!-- 主键 -->
+			<generator class="native"></generator>
+		</id>
+		<property name="ListId"></property>
+		<property name="ListTitle"></property>
+		<property name="ListAuthor"></property>
+		<property name="ListDesc"></property>
+		<property name="ListSongNum"></property>
+		<property name="ListLogo"></property>
+		
+		<!-- 配置多对多关系,与类型的多对多 -->
+		<!-- 
+		name:放置的是对方的集合的属性的名称
+		table:中间表的名称
+		column:中间表的外键的名称，放置的是当前的对象所对应的中间表中的对象名称
+		class:对方类的全路径
+		column:对方的对象在中间表中的外键的名称
+		 -->
+		<set name="types" table="songlistandtype" inverse="true" >
+            <key column="ListId" property-ref="ListId"></key>
+            <many-to-many class="com.wyb.rec.domain.type" column="idtype" />
+        </set>
+		<!-- 配置多对多关系 -->
+		
+		<!-- 配置多对多关系,与类型的多对多 -->
+		<!-- 
+		name:放置的是对方的集合的属性的名称
+		table:中间表的名称
+		column:中间表的外键的名称，放置的是当前的对象所对应的中间表中的对象名称
+		class:对方类的全路径
+		column:对方的对象在中间表中的外键的名称
+		 -->
+		<set name="songs" table="songandlist" inverse="false" >
+            <key column="ListId" property-ref="ListId"></key>
+            <many-to-many class="com.wyb.rec.domain.Song" column="SongId"  property-ref="SongId"/>
+        </set>
+		<!-- 配置多对多关系 -->
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+	<class name="com.wyb.rec.domain.type" table="type">
+		<id name="idtype" column="idtype"><!-- 主键 -->
+			<generator class="native"></generator>
+		</id>
+		
+		<property name="typeName" column="typeName"></property>
+	
+	<!-- 表示多对多关系 -->
+	<set name="songLists" table="songlistandtype" inverse="false">
+		<key column="idtype"></key>
+		<many-to-many class="com.wyb.rec.domain.SongList" column="ListId" property-ref="ListId" ></many-to-many>
+	</set>
+	<!-- 表示多对多关系  -->
+	</class>
+</hibernate-mapping>
